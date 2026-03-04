@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="author" content="Allen Solomon" />
+  <meta property="article:published_time" content="2026-03-03" />
+  <meta property="og:title" content="Women's Basketball Growth Series" />
+  <meta property="og:description"
+    content="Independent sports business analysis of WNBA fan growth, monetization, ARPU sensitivity, and revenue scenarios through 2030." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://wnbagrowthseries.pages.dev/" />
+  <meta property="og:image" content="https://wnbagrowthseries.pages.dev/preview.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women's Basketball Growth Series — Research Report</title>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0B3D91;
+      --navy-light: #1a5bc4;
+      --orange: #E4572E;
+      --orange-light: #f07a58;
+      --green: #1B7F4F;
+      --silver: #B0B8C4;
+      --cream: #F7F6F2;
+      --dgray: #2D2D2D;
+      --mgray: #6B7280;
+      --lgray: #E5E7EB;
+      --bg: #FAFBFC;
+      --card-bg: #FFFFFF;
+      --card-shadow: 0 1px 3px rgba(0, 0, 0, .06), 0 4px 16px rgba(0, 0, 0, .04);
+      --card-shadow-hover: 0 2px 8px rgba(0, 0, 0, .08), 0 8px 32px rgba(0, 0, 0, .06);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--dgray);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #06245c 0%, var(--navy) 40%, #1a5bc4 100%);
+      color: #fff;
+      padding: 80px 40px 60px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(228, 87, 46, .15) 0%, transparent 70%);
+      border-radius: 50%
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 255, 255, .05) 0%, transparent 70%);
+      border-radius: 50%
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      backdrop-filter: blur(4px)
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 16px
+    }
+
+    .hero h1 span {
+      color: var(--orange)
+    }
+
+    .hero p {
+      font-size: 17px;
+      opacity: .82;
+      max-width: 660px;
+      line-height: 1.7
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+      flex-wrap: wrap
+    }
+
+    .hero-stat {
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 12px;
+      padding: 16px 24px;
+      backdrop-filter: blur(4px)
+    }
+
+    .hero-stat .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--orange);
+      line-height: 1.1
+    }
+
+    .hero-stat .label {
+      font-size: 12px;
+      opacity: .65;
+      margin-top: 4px;
+      letter-spacing: .5px
+    }
+
+    /* NETWORKING BUTTONS */
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 36px;
+      flex-wrap: wrap
+    }
+
+    .btn-social {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 22px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: .2px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform .18s, box-shadow .18s, opacity .18s
+    }
+
+    .btn-social:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .28);
+      opacity: .93
+    }
+
+    .btn-linkedin {
+      background: #fff;
+      color: var(--navy)
+    }
+
+    .btn-x {
+      background: var(--orange);
+      color: #fff
+    }
+
+    .btn-social svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0
+    }
+
+    /* LAYOUT */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px
+    }
+
+    .section {
+      padding: 56px 0 24px
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 8px
+    }
+
+    .section-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.8rem;
+      color: var(--navy);
+      opacity: .18;
+      line-height: 1
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--navy);
+      line-height: 1.2
+    }
+
+    .section-subtitle {
+      color: var(--mgray);
+      font-size: 15px;
+      margin-bottom: 28px;
+      max-width: 740px
+    }
+
+    .footnote {
+      font-size: 12.5px;
+      color: var(--mgray);
+      font-style: italic;
+      margin-top: -16px;
+      margin-bottom: 24px;
+      max-width: 740px;
+      line-height: 1.5;
+      padding-left: 2px
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      padding: 28px;
+      margin-bottom: 28px;
+      transition: box-shadow .25s;
+      border: 1px solid rgba(0, 0, 0, .04)
+    }
+
+    .card:hover {
+      box-shadow: var(--card-shadow-hover)
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--dgray);
+      margin-bottom: 4px
+    }
+
+    .card-note {
+      font-size: 13px;
+      color: var(--mgray);
+      margin-bottom: 16px
+    }
+
+    /* INSIGHT */
+    .insight {
+      background: linear-gradient(135deg, #fef9f4, #fff7f2);
+      border-left: 4px solid var(--orange);
+      border-radius: 0 10px 10px 0;
+      padding: 18px 24px;
+      margin: 20px 0;
+      font-size: 15px;
+      color: var(--dgray)
+    }
+
+    .insight strong {
+      color: var(--orange)
+    }
+
+    /* ANALYST NOTE */
+    .analyst-note {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: linear-gradient(135deg, #f0f5ff, #e8efff);
+      border: 1px solid rgba(11, 61, 145, .15);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 28px
+    }
+
+    .analyst-note-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: var(--navy);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      margin-top: 2px
+    }
+
+    .analyst-note-body {
+      flex: 1
+    }
+
+    .analyst-note-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 6px
+    }
+
+    .analyst-note-text {
+      font-size: 14.5px;
+      color: var(--dgray);
+      line-height: 1.65
+    }
+
+    /* KPI */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 24px 0
+    }
+
+    .kpi {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(0, 0, 0, .04)
+    }
+
+    .kpi .value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--navy);
+      line-height: 1.1
+    }
+
+    .kpi .value.accent {
+      color: var(--orange)
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--mgray);
+      margin-top: 6px
+    }
+
+    /* TWO-COL */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px
+    }
+
+    /* TOC */
+    .toc {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: var(--card-shadow);
+      margin: 40px 0;
+      border: 1px solid rgba(0, 0, 0, .04)
+    }
+
+    .toc h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: 16px
+    }
+
+    .toc-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px
+    }
+
+    .toc-links a {
+      display: inline-block;
+      padding: 7px 16px;
+      background: var(--bg);
+      border: 1px solid var(--lgray);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 500;
+      transition: background .18s, border-color .18s
+    }
+
+    .toc-links a:hover {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
+
+    /* CHARTS */
+    .plotly-chart {
+      width: 100%;
+      min-height: 300px
+    }
+
+    .js-plotly-plot .plotly .modebar {
+      display: none !important
+    }
+
+    .section-divider {
+      height: 1px;
+      background: var(--lgray);
+      margin: 8px 0 0
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--dgray);
+      color: rgba(255, 255, 255, .6);
+      padding: 40px;
+      margin-top: 60px
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px
+    }
+
+    .footer p {
+      font-size: 13px;
+      line-height: 1.7
+    }
+
+    .footer strong {
+      color: rgba(255, 255, 255, .9)
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .btn-footer-linkedin {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      background: rgba(255, 255, 255, .1);
+      color: rgba(255, 255, 255, .9);
+      border: 1px solid rgba(255, 255, 255, .2);
+      transition: background .18s, transform .18s
+    }
+
+    .btn-footer-linkedin:hover {
+      background: rgba(255, 255, 255, .18);
+      transform: translateY(-1px)
+    }
+
+    .btn-footer-x {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--orange);
+      color: #fff;
+      border: 1px solid transparent;
+      transition: opacity .18s, transform .18s
+    }
+
+    .btn-footer-x:hover {
+      opacity: .88;
+      transform: translateY(-1px)
+    }
+
+    .btn-footer-linkedin svg,
+    .btn-footer-x svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0
+    }
+
+    /* MOBILE */
+    @media(max-width:768px) {
+      .hero {
+        padding: 56px 24px 40px
+      }
+
+      .hero-stats {
+        gap: 16px
+      }
+
+      .hero-actions {
+        gap: 10px
+      }
+
+      .two-col {
+        grid-template-columns: 1fr
+      }
+
+      .kpi-row {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .container {
+        padding: 0 16px
+      }
+
+      .section {
+        padding: 40px 0 16px
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start
+      }
+
+      .plotly-chart {
+        min-height: 260px
+      }
+
+      .toc-links {
+        gap: 8px
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag"> INDEPENDENT ANALYSIS · SPORTS BUSINESS </div>
+      <h1>Women's Basketball<br><span>Growth Series</span></h1>
+      <p>The WNBA fan base has tripled in seven years. Revenue per fan sits at one-third of NFL/NBA benchmarks.
+        This analysis quantifies the gap, and what closing it is worth.</p>
+
+      <div class="hero-actions">
+        <a href="https://www.linkedin.com/in/allen-solomon/" target="_blank" class="btn-social btn-linkedin">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+          </svg>
+          Connect on LinkedIn
+        </a>
+        <a href="https://x.com/_allensolomon" target="_blank" class="btn-social btn-x">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          Follow on X
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">59.0M</div>
+          <div class="label">Engaged fans 2024</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">+60.6%</div>
+          <div class="label">YoY audience growth</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">26.6%</div>
+          <div class="label">CAGR 2021&#8211;2024</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">22.1%</div>
+          <div class="label">Adult market penetration</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- EXECUTIVE SUMMARY -->
+  <div style="background:#FFFFFF; border-bottom:1px solid var(--lgray);">
+    <div class="container">
+      <div style="max-width:860px; padding:48px 0 44px;">
+
+        <div style="font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase;
+                  color:var(--orange); margin-bottom:14px;">
+          Executive Summary
+        </div>
+
+        <h2 style="font-family:'DM Serif Display',serif; font-size:1.45rem; color:var(--navy);
+                 font-weight:400; line-height:1.3; margin-bottom:20px;">
+          The WNBA is no longer a growth story. It is a monetization window.
+        </h2>
+
+        <p style="font-size:15px; line-height:1.78; color:var(--dgray); margin-bottom:16px;">
+          Between 2021 and 2024, the WNBA's engaged fan base grew at a 26.6% compound annual rate — nearly
+          three times the pace of the prior era. Total audience has tripled since 2017, reaching 59 million
+          fans and 22% adult market penetration. This is not a trend. It is a structural regime shift, driven
+          by compounding forces across media rights, athlete visibility, and cultural relevance that do not
+          reverse on their own.
+        </p>
+
+        <p style="font-size:15px; line-height:1.78; color:var(--dgray); margin-bottom:16px;">
+          The investment case rests on a single, durable gap: the WNBA's implied revenue per fan sits at
+          roughly $3.81 — against an NFL/NBA benchmark above $12. That is not a valuation discount.
+          It is unrealized upside in a league whose fan base is already here. Closing even a fraction of
+          that gap, at current audience scale, generates hundreds of millions in incremental annual revenue.
+        </p>
+
+        <p style="font-size:15px; line-height:1.78; color:var(--dgray);">
+          This report quantifies that opportunity across six dimensions: the demand trajectory, the
+          monetization gap, Unrivaled's incremental audience impact, and three revenue scenarios through 2030.
+          The bear case alone projects $357M in 2030 revenue — 58% above the 2024 baseline — using a 5%
+          growth assumption that is less than one-fifth of the observed rate. The data does not require
+          optimism. It requires attention.
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- TOC -->
+  <div class="container">
+    <div class="toc">
+      <h3>Contents</h3>
+      <div class="toc-links">
+        <a href="#regime">01 &middot; CAGR Regime Shift</a>
+        <a href="#demand">02 &middot; Demand &amp; Audience</a>
+        <a href="#monetization">03 &middot; Monetization</a>
+        <a href="#revenue">04 &middot; Revenue Scenarios</a>
+        <a href="#unrivaled">05 &middot; Unrivaled League</a>
+        <a href="#forecast">06 &middot; Forecast 2024&#8211;2030</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 01: CAGR REGIME -->
+  <div class="container">
+    <div class="section" id="regime">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title">CAGR Regime Shift</div>
+      </div>
+      <p class="section-subtitle">Two distinct growth eras separated by a structural inflection point around 2021. The
+        post-2021 CAGR of 26.6% is nearly 3&times; the prior era rate.</p>
+      <div class="card">
+        <div class="card-title">CAGR by Era: 2017&#8211;2021 vs. 2021&#8211;2024</div>
+        <div class="card-note">Source: SBRnet fan count data &#8212; annualized compound growth rates by period</div>
+        <div id="chart-cagr" class="plotly-chart" style="min-height:300px"></div>
+      </div>
+      <div class="insight"><strong>The inflection is structural, not cyclical.</strong> The 2021&#8211;2024 CAGR of
+        26.6% reflects compounding demand, not a one-year spike. New media deals, expanded coverage, and athlete
+        visibility all accelerated simultaneously.</div>
+    </div>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- SECTION 02: DEMAND -->
+  <div class="container">
+    <div class="section" id="demand">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title">Demand &amp; Audience Expansion</div>
+      </div>
+      <p class="section-subtitle">Total engaged fan base grew from 19.3M in 2017 to 59.0M in 2024 &#8212; a 3&times;
+        increase. Adult market penetration moved from 7.6% to 22.1% over the same period.</p>
+      <p class="footnote"><em>Note: Data for 2018&#8211;2020 is omitted due to gaps in the SBRnet survey cycle; growth
+          from 2017&#8211;2021 is analyzed as a CAGR.</em></p>
+
+      <div class="card">
+        <div class="card-title">Adult Market Penetration (SBRnet Survey Years)</div>
+        <div class="card-note">Source: SBRnet &#8212; WNBA Fans / U.S. Adults 18+ (Census Bureau) &middot;
+          2018&#8211;2020 omitted (survey gap)</div>
+        <div id="chart-pen" class="plotly-chart" style="min-height:320px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Total Engaged Fan Base (SBRnet Survey Years)</div>
+        <div class="card-note">Source: SBRnet &#8212; Total Reach &middot; 2018&#8211;2020 omitted (survey gap)</div>
+        <div id="chart-audience" class="plotly-chart" style="min-height:320px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Year-over-Year Audience Growth Rate</div>
+        <div class="card-note">Source: SBRnet &#8212; Consecutive survey-year pairs only; 2017&#8211;2021 shown as 4-yr
+          CAGR</div>
+        <div id="chart-yoy" class="plotly-chart" style="min-height:380px"></div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="value">19.3M</div>
+          <div class="kpi-label">Fans 2017</div>
+        </div>
+        <div class="kpi">
+          <div class="value accent">59.0M</div>
+          <div class="kpi-label">Fans 2024</div>
+        </div>
+        <div class="kpi">
+          <div class="value">+60.6%</div>
+          <div class="kpi-label">YoY Growth 2024</div>
+        </div>
+        <div class="kpi">
+          <div class="value">22.1%</div>
+          <div class="kpi-label">Adult Penetration 2024</div>
+        </div>
+      </div>
+      <div class="insight"><strong>2024 was a clear outlier.</strong> The 60.6% YoY growth rate was the highest in the
+        available dataset &#8212; nearly 4&times; the compounded average across prior observable periods. Whether this
+        becomes the new floor or reverts to trend is the key variable for forward projections.</div>
+    </div>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- SECTION 03: MONETIZATION -->
+  <div class="container">
+    <div class="section" id="monetization">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title">Monetization: Implied ARPU</div>
+      </div>
+      <p class="section-subtitle">At an estimated $200&#8211;250M in 2024 league revenue and 59M fans, the implied ARPU
+        sits between $3.39 and $4.24 &#8212; well below NFL/NBA benchmarks of $12+.</p>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Implied ARPU by Revenue Scenario</div>
+          <div class="card-note">Revenue range: $200M&#8211;$250M est. | Fans: 59.0M | Source: Public industry reporting
+          </div>
+          <div id="chart-arpu" class="plotly-chart" style="min-height:300px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Revenue Upside at Higher Penetration</div>
+          <div class="card-note">Holding 2024 ARPU fixed &#8212; penetration drives revenue at 30 / 40 / 50% scenarios
+          </div>
+          <div id="chart-rev-pen" class="plotly-chart" style="min-height:300px"></div>
+        </div>
+      </div>
+      <div class="insight"><strong>The monetization gap is the opportunity.</strong> Even reaching half the NFL's
+        per-fan revenue at current fan levels would imply $350M+ in league revenue. The fan base is already here; the
+        monetization infrastructure is still being built.</div>
+    </div>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- SECTION 04: REVENUE MODEL -->
+  <div class="container">
+    <div class="section" id="revenue">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title">Revenue Model Assumptions</div>
+      </div>
+      <p class="section-subtitle">Three ARPU scenarios anchored to the estimated 2024 revenue range, applied across
+        penetration levels from 30% to 50% of the U.S. adult population.</p>
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="value">$3.39</div>
+          <div class="kpi-label">Low ARPU ($200M rev.)</div>
+        </div>
+        <div class="kpi">
+          <div class="value accent">$3.81</div>
+          <div class="kpi-label">Base ARPU ($225M rev.)</div>
+        </div>
+        <div class="kpi">
+          <div class="value">$4.24</div>
+          <div class="kpi-label">High ARPU ($250M rev.)</div>
+        </div>
+        <div class="kpi">
+          <div class="value">266.9M</div>
+          <div class="kpi-label">U.S. Adults 18+ (2024)</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- SECTION 05: UNRIVALED -->
+  <div class="container">
+    <div class="section" id="unrivaled">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title">Unrivaled League: Offseason Impact</div>
+      </div>
+      <div class="analyst-note">
+        <div class="analyst-note-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" width="20" height="20">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+        </div>
+        <div class="analyst-note-body">
+          <div class="analyst-note-label">Analyst Context</div>
+          <div class="analyst-note-text">This analysis was specifically developed to evaluate the market fit and
+            incremental audience potential of the Unrivaled 3-on-3 league. The core question: does an offseason product
+            featuring WNBA stars generate net-new fans, or does it cannibalize existing WNBA audience? All three
+            scenarios model both conversion rates and cannibalization risk explicitly.</div>
+        </div>
+      </div>
+      <p class="section-subtitle">Scenario analysis estimates net additive fans ranging from 3.0M (conservative) to
+        11.1M (optimistic), with incremental revenue from $5.9M to $66.5M.</p>
+      <div class="card">
+        <div class="card-title">Unrivaled: Net Additive Fans &amp; Incremental Revenue by Scenario</div>
+        <div class="card-note">Left axis: Net Fans (M) &#8212; Navy &nbsp;|&nbsp; Right axis: Incremental Revenue ($M)
+          &#8212; Orange &nbsp;&middot;&nbsp; Source: SBRnet + analyst model</div>
+        <div id="chart-unrivaled" class="plotly-chart" style="min-height:440px"></div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="value">3.0M</div>
+          <div class="kpi-label">Net Fans &#8212; Low (5% conv.)</div>
+        </div>
+        <div class="kpi">
+          <div class="value accent">7.1M</div>
+          <div class="kpi-label">Net Fans &#8212; Base (10% conv.)</div>
+        </div>
+        <div class="kpi">
+          <div class="value">11.1M</div>
+          <div class="kpi-label">Net Fans &#8212; High (15% conv.)</div>
+        </div>
+      </div>
+      <div class="insight"><strong>Even the conservative scenario adds meaningful incremental value.</strong> At 5%
+        conversion with zero new-to-basketball fans, Unrivaled still contributes ~3M net fans and ~$5.9M in incremental
+        revenue. The base case ($28.4M) and high case ($66.5M) represent material upside to the WNBA ecosystem.</div>
+    </div>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- SECTION 06: FORECAST -->
+  <div class="container">
+    <div class="section" id="forecast">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title">Forecast 2024&#8211;2030</div>
+      </div>
+      <p class="section-subtitle">Three scenarios &#8212; Bear (5% CAGR), Base (8%), Bull (13%) &#8212; project fan
+        count and revenue through 2030. The bull case crosses the $1B revenue milestone before 2028.</p>
+      <div class="card">
+        <div class="card-title">Fan Forecast: 2024&#8211;2030 (Three Scenarios)</div>
+        <div class="card-note">2024 actual: 59.0M &middot; Bear: 5% CAGR &middot; Base: 8% CAGR &middot; Bull: 13% CAGR
+        </div>
+        <div id="chart-fans-forecast" class="plotly-chart" style="min-height:440px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Revenue Forecast: 2024&#8211;2030 (Three Scenarios)</div>
+        <div class="card-note">Modeled on fan growth &times; ARPU improvement assumptions &middot; 2024 base: ~$225M
+        </div>
+        <div id="chart-rev-forecast" class="plotly-chart" style="min-height:440px"></div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="value">$357M</div>
+          <div class="kpi-label">Bear Revenue 2030</div>
+        </div>
+        <div class="kpi">
+          <div class="value accent">$671M</div>
+          <div class="kpi-label">Base Revenue 2030</div>
+        </div>
+        <div class="kpi">
+          <div class="value">$1.68B</div>
+          <div class="kpi-label">Bull Revenue 2030</div>
+        </div>
+        <div class="kpi">
+          <div class="value">126M</div>
+          <div class="kpi-label">Bull Fan Count 2030</div>
+        </div>
+      </div>
+      <div class="insight"><strong>The floor has moved.</strong> Even the bear case reaches $357M by 2030 &#8212; 58%
+        above the 2024 baseline. The structural case for WNBA investment is not about peak scenarios; it is about a
+        durable base that has already tripled in seven years.</div>
+    </div>
+  </div>
+  <!-- METHODOLOGY -->
+  <div class="container">
+    <div class="section" id="methodology">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title">Methodology &amp; Data Notes</div>
+      </div>
+      <p class="section-subtitle">
+        All figures are derived from primary data sources or transparent assumptions anchored
+        to publicly available industry reporting. Where estimates are used, ranges are provided
+        and the conservatism of the methodology is stated explicitly.
+      </p>
+
+      <div class="card">
+        <div class="card-title">Fan Count Data — SBRnet</div>
+        <div class="card-note">Primary source for all audience figures</div>
+        <p style="font-size:14px; line-height:1.72; color:var(--dgray);">
+          Fan counts are drawn from SBRnet's "Attended or Watched (any)" metric, which captures
+          total reach across in-person attendance, broadcast television, streaming, and digital
+          consumption. Survey data is available for 2017, 2021, 2022, 2023, and 2024 only.
+          The 2018–2020 gap reflects SBRnet's survey cycle and is not interpolated. Growth
+          across the 2017–2021 period is therefore expressed as a four-year CAGR (9.3%) rather
+          than year-by-year figures. All other YoY comparisons are between consecutive
+          survey years.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Adult Population Denominator — U.S. Census Bureau</div>
+        <div class="card-note">Used to derive market penetration percentages</div>
+        <p style="font-size:14px; line-height:1.72; color:var(--dgray);">
+          U.S. adult population figures (18+) are sourced from the U.S. Census Bureau Population
+          Estimates Program, matched to the corresponding SBRnet survey year. Penetration is
+          calculated as WNBA fan count divided by U.S. adult population: 7.6% in 2017,
+          rising to 22.1% in 2024.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Implied ARPU — Derived from Public Revenue Range</div>
+        <div class="card-note">Not sourced from WNBA financial disclosures</div>
+        <p style="font-size:14px; line-height:1.72; color:var(--dgray);">
+          The WNBA does not publicly disclose league revenue. ARPU figures are derived by
+          dividing a public industry estimate range — $200M (low), $225M (base), $250M (high) —
+          by the 2024 fan count of 59.0M. This yields a base implied ARPU of $3.81. The
+          NFL/NBA benchmark of $12+ is sourced from publicly available league financial reporting
+          and widely cited industry analysis. The ARPU gap is used as a structural framing device,
+          not a precise valuation input.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Revenue Projections — 2024–2030</div>
+        <div class="card-note">Three scenarios: Bear (5% CAGR), Base (8%), Bull (13%)</div>
+        <p style="font-size:14px; line-height:1.72; color:var(--dgray);">
+          Projections are modeled as fan count growth (driven by penetration rate expansion
+          against an 0.8% annual adult population growth assumption) multiplied by ARPU
+          improvement assumptions in each scenario. The bear case uses a 5% fan CAGR —
+          roughly one-fifth of the 2021–2024 observed rate — and the most conservative ARPU
+          trajectory. Scenarios are independent; they are not probability-weighted. The purpose
+          is to define the plausible range, not to forecast a single outcome.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Unrivaled League Scenarios — Conversion &amp; Cannibalization</div>
+        <div class="card-note">Incremental fan and revenue impact modeled across three scenarios</div>
+        <p style="font-size:14px; line-height:1.72; color:var(--dgray);">
+          The Unrivaled model estimates net additive fans and incremental revenue by applying
+          a conversion rate to the WNBA fan base (5% / 10% / 15%), adding an assumption for
+          new-to-basketball fans (0 / 2M / 5M), and explicitly deducting a cannibalization
+          factor representing existing WNBA fans whose engagement shifts rather than grows
+          (0% / 10% / 20%). Net additive fan figures — 3.0M, 7.1M, and 11.1M across scenarios —
+          reflect this cannibalization adjustment. Incremental ARPU assumptions ($2 / $4 / $6)
+          are set below the implied WNBA ARPU to reflect Unrivaled's earlier-stage monetization
+          infrastructure.
+        </p>
+      </div>
+
+      <div class="insight">
+        <strong>A note on conservatism.</strong> Every scenario in this analysis — fan projections,
+        ARPU assumptions, Unrivaled conversion rates — is calibrated toward the low end of what
+        the observed data would support. The bear-case fan CAGR of 5% is less than one-fifth of
+        the 2021–2024 rate. The base ARPU of $3.81 represents no improvement from 2024 levels
+        in the penetration model. The intent is to show that the investment case is durable even
+        under conservative assumptions — not to argue for a best-case outcome.
+      </div>
+
+    </div>
+    <div class="section-divider"></div>
+  </div>
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-inner">
+      <p>
+        <strong>Women's Basketball Growth Series</strong><br>
+        Building at the intersection of sports data, fan growth, and league economics.<br>
+        <span style="opacity:0.55;">Data: SBRnet &middot; U.S. Census Bureau &middot; Public Industry Reporting</span>
+      </p>
+      <div class="footer-actions">
+        <a href="https://www.linkedin.com/in/allen-solomon/" target="_blank" class="btn-footer-linkedin">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+          </svg>
+          Connect on LinkedIn
+        </a>
+        <a href="https://x.com/_allensolomon" target="_blank" class="btn-footer-x">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          Follow on X
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Constants ─────────────────────────────────────────────── */
+    const NAVY = '#0B3D91', ORANGE = '#E4572E', GREEN = '#1B7F4F';
+    const SILVER = '#B0B8C4', DGRAY = '#2D2D2D', MGRAY = '#6B7280', LGRAY = '#E5E7EB', WHITE = '#FFFFFF';
+
+    const BL = {
+      paper_bgcolor: WHITE, plot_bgcolor: WHITE,
+      font: { family: 'DM Sans, sans-serif', color: DGRAY },
+      margin: { t: 32, r: 24, b: 52, l: 64 },
+      xaxis: { showgrid: false, zeroline: false, tickfont: { size: 12, color: DGRAY }, linecolor: LGRAY, linewidth: 1, showline: true },
+      yaxis: { gridcolor: LGRAY, gridwidth: .8, zeroline: false, showline: false, ticks: '', tickfont: { size: 11, color: MGRAY } },
+      hoverlabel: { bgcolor: WHITE, bordercolor: LGRAY, font: { family: 'DM Sans', size: 13, color: DGRAY } },
+    };
+    const ml = (ex) => Object.assign({}, BL, ex, {
+      xaxis: Object.assign({}, BL.xaxis, ex.xaxis || {}),
+      yaxis: Object.assign({}, BL.yaxis, ex.yaxis || {}),
+    });
+    const cfg = { responsive: true, displayModeBar: false };
+
+    /* ── FIX 1: "Interactive" removed from all HTML already ────── */
+
+    /* ── CHART 01: CAGR Regime ─────────────────────────────────── */
+    Plotly.newPlot('chart-cagr', [{
+      x: ['2017–2021 Era', '2021–2024 Era'], y: [9.3, 26.6], type: 'bar',
+      marker: { color: [SILVER, NAVY], line: { color: WHITE, width: 2.5 } },
+      text: ['9.3%', '26.6%'], textposition: 'outside',
+      textfont: { size: 15, color: DGRAY, family: 'DM Sans' },
+      hovertemplate: '<b>%{x}</b><br>CAGR: %{y:.1f}%<extra></extra>',
+    }], ml({
+      height: 320, margin: { t: 48, r: 24, b: 52, l: 64 },
+      yaxis: {
+        ...BL.yaxis, range: [0, 36], ticksuffix: '%', dtick: 5,
+        title: { text: 'Compound Annual Growth Rate', font: { size: 12, color: MGRAY } }
+      },
+      annotations: [{
+        x: 1, y: 29.5, text: '<b>+17.3 pp acceleration</b>',
+        showarrow: true, ax: 0, ay: -42, arrowhead: 2, arrowcolor: ORANGE,
+        font: { size: 11, color: ORANGE }, bgcolor: WHITE, bordercolor: ORANGE, borderwidth: 1, borderpad: 5
+      }],
+    }), cfg);
+
+    /* ── FIX 2: Survey years only — 2017,2021,2022,2023,2024 ───── */
+    const sYrs = [2017, 2021, 2022, 2023, 2024];
+    const sFans = [19.3, 26.8, 35.0, 36.7, 59.0];
+    const sPop = [252.1, 258.3, 260.1, 262.4, 266.9];
+    const sPen = sFans.map((f, i) => +(f / sPop[i] * 100).toFixed(2));
+    // sPen = [7.65, 10.38, 13.46, 13.98, 22.10]
+
+    /* CHART 02a: Penetration */
+    Plotly.newPlot('chart-pen', [{
+      x: sYrs, y: sPen, mode: 'lines+markers',
+      line: { color: ORANGE, width: 3 },
+      marker: { size: 10, color: ORANGE, line: { color: WHITE, width: 2.5 } },
+      fill: 'tozeroy', fillcolor: 'rgba(228,87,46,0.08)',
+      hovertemplate: '<b>%{x}</b><br>Penetration: %{y:.2f}%<extra></extra>',
+    }], ml({
+      height: 320,
+      xaxis: {
+        ...BL.xaxis, tickvals: sYrs, ticktext: sYrs.map(String),
+        title: { text: 'Survey Year', font: { size: 12, color: MGRAY } }
+      },
+      yaxis: {
+        ...BL.yaxis, range: [0, 28], ticksuffix: '%', dtick: 4,
+        title: { text: 'Adult Market Penetration (%)', font: { size: 12, color: MGRAY } }
+      },
+      shapes: [{
+        type: 'line', x0: 2017, x1: 2021, y0: sPen[0], y1: sPen[1],
+        line: { color: 'rgba(228,87,46,0.28)', width: 2, dash: 'dot' }
+      }],
+      annotations: [
+        { x: 2024, y: sPen[4] + 2, text: '<b>22.1%</b>', showarrow: false, font: { size: 12, color: ORANGE } },
+        {
+          x: 2019, y: 5.5,
+          text: '<i>2018–2020: SBRnet<br>survey gap</i>', showarrow: false,
+          font: { size: 10, color: MGRAY }, bgcolor: 'rgba(250,251,252,0.92)',
+          bordercolor: LGRAY, borderwidth: 1, borderpad: 5
+        },
+      ],
+    }), cfg);
+
+    /* CHART 02b: Audience */
+    Plotly.newPlot('chart-audience', [{
+      x: sYrs, y: sFans, mode: 'lines+markers',
+      line: { color: NAVY, width: 3.5 },
+      marker: { size: 10, color: NAVY, line: { color: WHITE, width: 2.5 } },
+      fill: 'tozeroy', fillcolor: 'rgba(11,61,145,0.07)',
+      hovertemplate: '<b>%{x}</b><br>Fans: %{y:.1f}M<extra></extra>',
+    }], ml({
+      height: 320,
+      xaxis: {
+        ...BL.xaxis, tickvals: sYrs, ticktext: sYrs.map(String),
+        title: { text: 'Survey Year', font: { size: 12, color: MGRAY } }
+      },
+      yaxis: {
+        ...BL.yaxis, range: [0, 70], ticksuffix: 'M', dtick: 10,
+        title: { text: 'Engaged Fans (Millions)', font: { size: 12, color: MGRAY } }
+      },
+      shapes: [{
+        type: 'line', x0: 2017, x1: 2021, y0: sFans[0], y1: sFans[1],
+        line: { color: 'rgba(11,61,145,0.22)', width: 2, dash: 'dot' }
+      }],
+      annotations: [
+        { x: 2024, y: 62, text: '<b>59.0M</b>', showarrow: false, font: { size: 12, color: NAVY } },
+        {
+          x: 2019, y: 11,
+          text: '<i>2018–2020: SBRnet<br>survey gap</i>', showarrow: false,
+          font: { size: 10, color: MGRAY }, bgcolor: 'rgba(250,251,252,0.92)',
+          bordercolor: LGRAY, borderwidth: 1, borderpad: 5
+        },
+      ],
+    }), cfg);
+
+    /* ── FIX 5: YoY — only consecutive pairs, textposition outside,
+                 top margin generous so 60.6% label is never clipped ── */
+    Plotly.newPlot('chart-yoy', [{
+      x: ['2017→2021<br>(4-yr CAGR)', '2022 vs 2021', '2023 vs 2022', '2024 vs 2023'],
+      y: [9.3, 30.6, 4.9, 60.6],
+      type: 'bar',
+      marker: { color: [SILVER, NAVY, MGRAY, NAVY], line: { color: WHITE, width: 1.5 } },
+      text: ['9.3% CAGR', '+30.6%', '+4.9%', '+60.6%'],
+      textposition: 'outside',
+      textfont: { size: 12, color: DGRAY },
+      hovertemplate: '<b>%{x}</b><br>%{y:.1f}%<extra></extra>',
+      cliponaxis: false,
+    }], ml({
+      height: 380,
+      margin: { t: 72, r: 24, b: 68, l: 64 },   /* tall top margin so outside labels have room */
+      xaxis: { ...BL.xaxis, tickfont: { size: 11, color: DGRAY } },
+      yaxis: {
+        ...BL.yaxis, range: [0, 82], ticksuffix: '%', dtick: 10,
+        title: { text: 'Growth Rate (%)', font: { size: 12, color: MGRAY } }
+      },
+      annotations: [
+        {
+          x: '2024 vs 2023', y: 67,
+          text: '<b>60.6%</b> — highest on record',
+          showarrow: true, ax: -150, ay: -40, arrowhead: 2, arrowcolor: ORANGE,
+          font: { size: 11, color: ORANGE }, bgcolor: WHITE, bordercolor: ORANGE, borderwidth: 1, borderpad: 5
+        },
+        {
+          x: '2017→2021<br>(4-yr CAGR)', y: 3.5,
+          text: '<i>gap period CAGR</i>', showarrow: false, font: { size: 9, color: MGRAY }
+        },
+      ],
+    }), cfg);
+
+    /* ── FIX 3: ARPU — y-axis range [0,15], benchmark shape at y=12 ── */
+    Plotly.newPlot('chart-arpu', [{
+      x: ['Low ($200M)', 'Base ($225M)', 'High ($250M)'],
+      y: [3.39, 3.81, 4.24], type: 'bar',
+      marker: { color: [SILVER, NAVY, ORANGE], line: { color: WHITE, width: 2 } },
+      text: ['$3.39', '$3.81', '$4.24'], textposition: 'outside',
+      textfont: { size: 13, color: DGRAY },
+      hovertemplate: '<b>%{x}</b><br>ARPU: $%{y:.2f}<extra></extra>',
+    }], ml({
+      height: 320,
+      margin: { t: 40, r: 24, b: 52, l: 64 },
+      yaxis: {
+        ...BL.yaxis,
+        range: [0, 15],          /* expanded to show $12 benchmark */
+        tickprefix: '$', dtick: 2,
+        title: { text: 'Implied ARPU (USD per fan)', font: { size: 12, color: MGRAY } }
+      },
+      shapes: [{                     /* benchmark line at exactly y=12 */
+        type: 'line', x0: -0.5, x1: 2.5, y0: 12, y1: 12,
+        line: { color: GREEN, width: 1.8, dash: 'dash' },
+      }],
+      annotations: [{
+        x: 2.44, y: 12.05,
+        xanchor: 'right', yanchor: 'bottom',
+        text: '<b>NFL / NBA benchmark: ~$12+</b>',
+        showarrow: false,
+        font: { size: 10.5, color: GREEN },
+        bgcolor: 'rgba(255,255,255,0.9)', bordercolor: GREEN, borderwidth: 1, borderpad: 4,
+      }],
+    }), cfg);
+
+    /* CHART 03b: Revenue vs Penetration */
+    const pLvl = ['30%', '40%', '50%'], p24 = 266978268;
+    const aL = 3.39, aB = 3.81, aH = 4.24;
+    const rLow = [.30, .40, .50].map(p => Math.round(p * p24 * aL / 1e6));
+    const rBase = [.30, .40, .50].map(p => Math.round(p * p24 * aB / 1e6));
+    const rHigh = [.30, .40, .50].map(p => Math.round(p * p24 * aH / 1e6));
+
+    Plotly.newPlot('chart-rev-pen', [
+      {
+        x: pLvl, y: rLow, name: 'Low ARPU ($3.39)', type: 'bar',
+        marker: { color: SILVER, line: { color: WHITE, width: 1.5 } },
+        text: rLow.map(v => '$' + v + 'M'), textposition: 'outside', textfont: { size: 10, color: SILVER },
+        hovertemplate: '<b>%{x}</b><br>Low: $%{y}M<extra></extra>'
+      },
+      {
+        x: pLvl, y: rBase, name: 'Base ARPU ($3.81)', type: 'bar',
+        marker: { color: NAVY, line: { color: WHITE, width: 1.5 } },
+        text: rBase.map(v => '$' + v + 'M'), textposition: 'outside', textfont: { size: 10, color: NAVY },
+        hovertemplate: '<b>%{x}</b><br>Base: $%{y}M<extra></extra>'
+      },
+      {
+        x: pLvl, y: rHigh, name: 'High ARPU ($4.24)', type: 'bar',
+        marker: { color: ORANGE, line: { color: WHITE, width: 1.5 } },
+        text: rHigh.map(v => '$' + v + 'M'), textposition: 'outside', textfont: { size: 10, color: ORANGE },
+        hovertemplate: '<b>%{x}</b><br>High: $%{y}M<extra></extra>'
+      },
+    ], ml({
+      height: 300, barmode: 'group',
+      margin: { t: 52, r: 24, b: 52, l: 64 },
+      xaxis: { ...BL.xaxis, title: { text: 'Adult Market Penetration', font: { size: 12, color: MGRAY } } },
+      yaxis: { ...BL.yaxis, range: [0, 680], tickprefix: '$', ticksuffix: 'M', dtick: 100 },
+      legend: { orientation: 'h', y: 1.18, x: 0, font: { size: 10 } },
+      shapes: [{
+        type: 'line', x0: -0.5, x1: 2.5, y0: 225, y1: 225,
+        line: { color: NAVY, width: 1, dash: 'dot' }
+      }],
+      annotations: [{
+        x: 2.42, y: 240, text: '2024 base ~$225M', showarrow: false,
+        font: { size: 10, color: NAVY }, bgcolor: WHITE, bordercolor: NAVY, borderwidth: 1, borderpad: 4
+      }],
+    }), cfg);
+
+    /* ── FIX 4: Unrivaled — proper dual-axis grouped bar ────────
+       Left  y  = Net Additive Fans (M)  → Navy bars
+       Right y2 = Incremental Revenue($M) → Orange bars
+       overlaying:'y', side:'right'
+    ─────────────────────────────────────────────────────────── */
+    Plotly.newPlot('chart-unrivaled', [
+      {
+        name: 'Net Additive Fans (M)',
+        x: ['Low', 'Base', 'High'], y: [3.0, 7.1, 11.1],
+        type: 'bar', yaxis: 'y', offsetgroup: 'fans',
+        marker: {
+          color: ['rgba(11,61,145,0.52)', 'rgba(11,61,145,0.76)', 'rgba(11,61,145,1)'],
+          line: { color: WHITE, width: 2 },
+        },
+        text: ['3.0M', '7.1M', '11.1M'], textposition: 'outside',
+        textfont: { size: 13, family: 'DM Sans', color: NAVY },
+        hovertemplate: '<b>%{x} scenario</b><br>Net fans: %{y:.1f}M<extra></extra>',
+      },
+      {
+        name: 'Incremental Revenue ($M)',
+        x: ['Low', 'Base', 'High'], y: [5.9, 28.4, 66.5],
+        type: 'bar', yaxis: 'y2', offsetgroup: 'revenue',
+        marker: {
+          color: ['rgba(228,87,46,0.52)', 'rgba(228,87,46,0.76)', 'rgba(228,87,46,1)'],
+          line: { color: WHITE, width: 2 },
+        },
+        text: ['$5.9M', '$28.4M', '$66.5M'], textposition: 'outside',
+        textfont: { size: 13, family: 'DM Sans', color: ORANGE },
+        hovertemplate: '<b>%{x} scenario</b><br>Revenue: $%{y:.1f}M<extra></extra>',
+      },
+    ], {
+      paper_bgcolor: WHITE, plot_bgcolor: WHITE,
+      font: { family: 'DM Sans, sans-serif', color: DGRAY },
+      barmode: 'group', bargap: 0.26, bargroupgap: 0.06,
+      height: 460,
+      margin: { t: 64, r: 92, b: 96, l: 72 },
+      xaxis: {
+        showgrid: false, zeroline: false, tickfont: { size: 13, color: DGRAY },
+        linecolor: LGRAY, linewidth: 1, showline: true
+      },
+      /* Left Y: Fans */
+      yaxis: {
+        title: { text: 'Net Additive Fans (M)', font: { size: 12, color: NAVY } },
+        range: [0, 15.5], dtick: 2, ticksuffix: 'M',
+        tickfont: { size: 11, color: NAVY },
+        gridcolor: LGRAY, gridwidth: .8,
+        zeroline: false, showline: false, ticks: '', side: 'left',
+      },
+      /* Right Y2: Revenue — overlaying y, side right */
+      yaxis2: {
+        title: { text: 'Incremental Revenue ($M)', font: { size: 12, color: ORANGE } },
+        range: [0, 90], dtick: 10, tickprefix: '$', ticksuffix: 'M',
+        tickfont: { size: 11, color: ORANGE },
+        overlaying: 'y', side: 'right',
+        showgrid: false, zeroline: false, showline: false, ticks: '',
+      },
+      legend: {
+        orientation: 'h', x: 0, y: 1.10, font: { size: 12, family: 'DM Sans' },
+        bgcolor: 'rgba(255,255,255,0)'
+      },
+      annotations: [{
+        x: 0.5, y: -0.22, xref: 'paper', yref: 'paper', xanchor: 'center', yanchor: 'top',
+        text: '<i>Low: 5% conv, 0 new fans, 0% cannib. · Base: 10% conv, +2M new fans, 10% cannib. · High: 15% conv, +5M new fans, 20% cannib.</i>',
+        showarrow: false, font: { size: 10, color: MGRAY, family: 'DM Sans' },
+      }],
+      hoverlabel: { bgcolor: WHITE, bordercolor: LGRAY, font: { family: 'DM Sans', size: 13, color: DGRAY } },
+    }, cfg);
+
+    /* ── CHART 06a: Fan Forecast ───────────────────────────────── */
+    const fcY = [2024, 2025, 2026, 2027, 2028, 2029, 2030];
+    Plotly.newPlot('chart-fans-forecast', [
+      {
+        x: fcY, y: [59.0, 62.3, 65.6, 69.0, 72.2, 75.2, 78.0], name: 'Bear (5% CAGR)', mode: 'lines+markers',
+        line: { color: SILVER, width: 2.5, dash: 'dash' }, marker: { size: 9, color: SILVER, line: { color: WHITE, width: 2 } },
+        hovertemplate: '<b>%{x}</b><br>Bear: %{y:.0f}M fans<extra></extra>'
+      },
+      {
+        x: fcY, y: [59.0, 65.5, 71.6, 78.2, 85.0, 91.5, 98.0], name: 'Base (8% CAGR)', mode: 'lines+markers',
+        line: { color: NAVY, width: 3.5 }, marker: { size: 10, color: NAVY, line: { color: WHITE, width: 2.5 } },
+        hovertemplate: '<b>%{x}</b><br>Base: %{y:.0f}M fans<extra></extra>'
+      },
+      {
+        x: fcY, y: [59.0, 69.7, 80.8, 91.9, 103.0, 114.8, 126.0], name: 'Bull (13% CAGR)', mode: 'lines+markers',
+        line: { color: ORANGE, width: 2.5 }, marker: { size: 9, color: ORANGE, line: { color: WHITE, width: 2 } },
+        hovertemplate: '<b>%{x}</b><br>Bull: %{y:.0f}M fans<extra></extra>'
+      },
+      {
+        x: [2024], y: [59.0], mode: 'markers', showlegend: false,
+        marker: { size: 14, color: DGRAY, line: { color: WHITE, width: 3 }, symbol: 'circle' },
+        hovertemplate: '<b>2024 Actual</b><br>59.0M fans<extra></extra>'
+      },
+    ], ml({
+      height: 440, margin: { t: 28, r: 120, b: 52, l: 64 },
+      xaxis: { ...BL.xaxis, range: [2023.5, 2031.4], dtick: 1 },
+      yaxis: { ...BL.yaxis, range: [50, 140], ticksuffix: 'M', dtick: 10 },
+      legend: { orientation: 'h', y: 1.06, x: 0, font: { size: 12 } },
+      annotations: [
+        { x: 2030.2, y: 78, text: '<b>Bear 78M</b>', showarrow: false, font: { size: 11, color: SILVER } },
+        { x: 2030.2, y: 98, text: '<b>Base 98M</b>', showarrow: false, font: { size: 11, color: NAVY } },
+        { x: 2030.2, y: 126, text: '<b>Bull 126M</b>', showarrow: false, font: { size: 11, color: ORANGE } },
+        {
+          x: 2024, y: 59, ax: -36, ay: -44, text: '2024 Actual<br><b>59.0M</b>',
+          showarrow: true, arrowhead: 2, arrowcolor: DGRAY, font: { size: 10, color: DGRAY },
+          bgcolor: WHITE, bordercolor: LGRAY, borderwidth: 1, borderpad: 5
+        },
+      ],
+    }), cfg);
+
+    /* ── CHART 06b: Revenue Forecast ───────────────────────────── */
+    Plotly.newPlot('chart-rev-forecast', [
+      {
+        x: fcY, y: [225, 240, 265, 283, 310, 335, 357], name: 'Bear', mode: 'lines+markers',
+        line: { color: SILVER, width: 2.5, dash: 'dash' }, marker: { size: 9, color: SILVER, line: { color: WHITE, width: 2 } },
+        hovertemplate: '<b>%{x}</b><br>Bear: $%{y}M<extra></extra>'
+      },
+      {
+        x: fcY, y: [225, 280, 390, 450, 520, 596, 671], name: 'Base', mode: 'lines+markers',
+        line: { color: NAVY, width: 3.5 }, marker: { size: 10, color: NAVY, line: { color: WHITE, width: 2.5 } },
+        hovertemplate: '<b>%{x}</b><br>Base: $%{y}M<extra></extra>'
+      },
+      {
+        x: fcY, y: [225, 445, 740, 925, 1145, 1390, 1681], name: 'Bull', mode: 'lines+markers',
+        line: { color: ORANGE, width: 2.5 }, marker: { size: 9, color: ORANGE, line: { color: WHITE, width: 2 } },
+        hovertemplate: '<b>%{x}</b><br>Bull: $%{y}M<extra></extra>'
+      },
+      {
+        x: [2024], y: [225], mode: 'markers', showlegend: false,
+        marker: { size: 14, color: DGRAY, line: { color: WHITE, width: 3 } },
+        hovertemplate: '<b>2024 Base</b><br>$225M<extra></extra>'
+      },
+    ], ml({
+      height: 440, margin: { t: 28, r: 120, b: 52, l: 64 },
+      xaxis: { ...BL.xaxis, range: [2023.5, 2031.4], dtick: 1 },
+      yaxis: { ...BL.yaxis, range: [0, 1900], tickprefix: '$', ticksuffix: 'M', dtick: 200 },
+      legend: { orientation: 'h', y: 1.06, x: 0, font: { size: 12 } },
+      shapes: [{
+        type: 'line', x0: 2023.5, x1: 2031, y0: 1000, y1: 1000,
+        line: { color: GREEN, width: 1.5, dash: 'dash' }
+      }],
+      annotations: [
+        { x: 2023.7, y: 1055, text: '<b>$1B milestone</b>', showarrow: false, font: { size: 10, color: GREEN } },
+        { x: 2030.2, y: 357, text: '<b>Bear $357M</b>', showarrow: false, font: { size: 11, color: SILVER } },
+        { x: 2030.2, y: 671, text: '<b>Base $671M</b>', showarrow: false, font: { size: 11, color: NAVY } },
+        { x: 2030.2, y: 1681, text: '<b>Bull $1,681M</b>', showarrow: false, font: { size: 11, color: ORANGE } },
+        {
+          x: 2024, y: 225, ax: 52, ay: -42, text: '2024 Base<br><b>$225M</b>',
+          showarrow: true, arrowhead: 2, arrowcolor: DGRAY, font: { size: 10, color: DGRAY },
+          bgcolor: WHITE, bordercolor: LGRAY, borderwidth: 1, borderpad: 5
+        },
+      ],
+    }), cfg);
+
+    /* Smooth scroll */
+    document.querySelectorAll('.toc-links a').forEach(a => {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        const t = document.querySelector(this.getAttribute('href'));
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+
+</html>
